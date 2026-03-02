@@ -247,6 +247,7 @@
 
   // Re-render on language change to update translated strings
   document.addEventListener('edops:langchange', function () {
+    if (!allProjects.length) return; // data not yet loaded
     // Update "All" filter button text
     const allBtn = document.querySelector('.filter-btn[data-i18n="projects.filter_all"]');
     if (allBtn) allBtn.textContent = t('projects.filter_all', 'All');

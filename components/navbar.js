@@ -118,6 +118,8 @@
     // Re-apply translations when language changes
     document.addEventListener('edops:langchange', function (e) {
       langBtn.textContent = e.detail.lang === 'fr' ? 'EN' : 'FR';
+      toggle.setAttribute('aria-label',
+        window.EDOpsI18n ? window.EDOpsI18n.t('nav.toggle_aria') : 'Toggle navigation');
     });
   }
 
