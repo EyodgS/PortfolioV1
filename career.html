@@ -108,7 +108,58 @@
       color: var(--accent-green);
     }
 
-    /* ---- Philosophy grid ---- */
+    /* ---- Certifications grid ---- */
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .cert-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      transition: border-color var(--transition);
+    }
+
+    .cert-card:hover { border-color: var(--border-bright); }
+
+    .cert-status {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.4rem;
+      font-family: var(--font-mono);
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .cert-card.cert-wip .cert-status {
+      color: var(--accent-orange);
+      border: 1px solid var(--accent-orange);
+      background: rgba(255, 107, 53, 0.06);
+    }
+
+    .cert-card.cert-planned .cert-status {
+      color: var(--text-dim);
+      border: 1px solid var(--border-bright);
+    }
+
+    .cert-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-top: 0.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .cert-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
     .philosophy-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -217,6 +268,59 @@
             <li data-i18n="career.cpage_task9">Documentation maintenance and operational procedure creation</li>
           </ul>
         </article>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Education -->
+    <section class="section" aria-labelledby="edu-heading">
+      <header class="section-header">
+        <p class="section-tag" data-i18n="career.edu_tag">// Education</p>
+        <h2 id="edu-heading" data-i18n="career.edu_title">Academic Background</h2>
+      </header>
+
+      <div class="timeline" aria-label="Education timeline">
+        <article class="timeline-item" aria-label="Bachelor BAIS">
+          <div class="timeline-meta">
+            <span class="timeline-company" data-i18n="career.edu_bais_school">Bachelor BAIS — Work-Study</span>
+            <span class="timeline-period" data-i18n="career.edu_bais_period">2023 — 2024</span>
+          </div>
+          <div class="timeline-role" data-i18n="career.edu_bais_title">Bachelor BAIS — IT Infrastructure &amp; Systems Administration (Bac+3)</div>
+          <p class="timeline-desc" data-i18n="career.edu_bais_desc">Bachelor-level degree specializing in Systems &amp; Network Administration, completed through a work-study program at CPAGE. Covers enterprise infrastructure, network architecture, and operational security.</p>
+        </article>
+
+        <article class="timeline-item" aria-label="BTS SIO SISR">
+          <div class="timeline-meta">
+            <span class="timeline-company" data-i18n="career.edu_bts_school">BTS SIO — SISR track</span>
+            <span class="timeline-period" data-i18n="career.edu_bts_period">2021 — 2023</span>
+          </div>
+          <div class="timeline-role" data-i18n="career.edu_bts_title">BTS SIO option SISR — IT Systems &amp; Networks (Bac+2)</div>
+          <p class="timeline-desc" data-i18n="career.edu_bts_desc">Two-year technical degree in IT services, option SISR (Infrastructure, Systems and Networks). Foundations in networking, system administration, and security practices.</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Certifications -->
+    <section class="section" aria-labelledby="certs-heading">
+      <header class="section-header">
+        <p class="section-tag" data-i18n="career.certs_tag">// Certifications</p>
+        <h2 id="certs-heading" data-i18n="career.certs_title">Certifications &amp; Professional Development</h2>
+      </header>
+
+      <div class="certs-grid">
+        <div class="cert-card cert-wip">
+          <span class="cert-status" data-i18n="career.cert_status_wip">In Preparation</span>
+          <div class="cert-name" data-i18n="career.cert_ccna_name">Cisco CCNA</div>
+          <p class="cert-desc" data-i18n="career.cert_ccna_desc">Routing &amp; Switching — Enterprise networking foundations (200-301)</p>
+        </div>
+        <div class="cert-card cert-planned">
+          <span class="cert-status" data-i18n="career.cert_status_planned">Planned</span>
+          <div class="cert-name" data-i18n="career.cert_az900_name">Microsoft AZ-900</div>
+          <p class="cert-desc" data-i18n="career.cert_az900_desc">Azure Fundamentals — Cloud concepts &amp; core services</p>
+        </div>
       </div>
     </section>
 
