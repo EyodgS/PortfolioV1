@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/i18n.js"></script>
   <style>
     /* ---- NOC layout ---- */
     .noc-page { padding: 1.5rem; }
@@ -183,7 +184,7 @@
 <main class="page-content noc-page" aria-label="NOC Dashboard">
 
   <div class="noc-topbar">
-    <div class="noc-title"><span>ED-OPS</span> // NOC DASHBOARD — LIVE TELEMETRY (SIMULATED)</div>
+    <div class="noc-title"><span>ED-OPS</span> // <span data-i18n="ops.noc_title">NOC DASHBOARD — LIVE TELEMETRY (SIMULATED)</span></div>
     <div class="noc-time" id="noc-clock" aria-live="polite" aria-label="Current time"></div>
   </div>
 
@@ -192,37 +193,37 @@
     <!-- Uptime -->
     <div class="noc-widget" aria-label="System uptime">
       <div class="widget-header">
-        <span class="widget-label">System Uptime</span>
+        <span class="widget-label" data-i18n="ops.uptime">System Uptime</span>
         <span class="status-dot" aria-hidden="true"></span>
       </div>
       <div class="uptime-counter" id="uptime-counter" aria-live="polite">00:00:00:00</div>
-      <div class="widget-sub">Since <span id="uptime-since"></span></div>
+      <div class="widget-sub"><span data-i18n="ops.uptime_since">Since</span> <span id="uptime-since"></span></div>
     </div>
 
     <!-- CPU -->
     <div class="noc-widget" aria-label="CPU utilisation">
       <div class="widget-header">
-        <span class="widget-label">CPU Utilisation</span>
+        <span class="widget-label" data-i18n="ops.cpu">CPU Utilisation</span>
         <span class="widget-value" id="cpu-val" aria-live="polite">0%</span>
       </div>
       <div class="gauge-bar"><div class="gauge-fill green" id="cpu-bar" style="width:0%"></div></div>
-      <div class="widget-sub">pfSense (4 vCPU)</div>
+      <div class="widget-sub" data-i18n="ops.cpu_sub">pfSense (4 vCPU)</div>
     </div>
 
     <!-- RAM -->
     <div class="noc-widget" aria-label="Memory utilisation">
       <div class="widget-header">
-        <span class="widget-label">Memory</span>
+        <span class="widget-label" data-i18n="ops.memory">Memory</span>
         <span class="widget-value" id="ram-val" aria-live="polite">0%</span>
       </div>
       <div class="gauge-bar"><div class="gauge-fill cyan" id="ram-bar" style="width:0%"></div></div>
-      <div class="widget-sub">AD-DC01 (8 GB)</div>
+      <div class="widget-sub" data-i18n="ops.memory_sub">AD-DC01 (8 GB)</div>
     </div>
 
     <!-- Network traffic chart -->
     <div class="noc-widget wide" aria-label="Network traffic chart">
       <div class="widget-header">
-        <span class="widget-label">Network Traffic (Mbps)</span>
+        <span class="widget-label" data-i18n="ops.traffic">Network Traffic (Mbps)</span>
         <span class="widget-sub" id="traffic-vals" aria-live="polite">↑ 0 Mbps  ↓ 0 Mbps</span>
       </div>
       <canvas id="traffic-canvas" role="img" aria-label="Network traffic graph"></canvas>
@@ -231,36 +232,36 @@
     <!-- Disk -->
     <div class="noc-widget" aria-label="Disk utilisation">
       <div class="widget-header">
-        <span class="widget-label">Disk I/O</span>
+        <span class="widget-label" data-i18n="ops.disk">Disk I/O</span>
         <span class="widget-value" id="disk-val" aria-live="polite">0%</span>
       </div>
       <div class="gauge-bar"><div class="gauge-fill orange" id="disk-bar" style="width:0%"></div></div>
-      <div class="widget-sub">SRV-MON01 volume</div>
+      <div class="widget-sub" data-i18n="ops.disk_sub">SRV-MON01 volume</div>
     </div>
 
     <!-- Active sessions -->
     <div class="noc-widget" aria-label="Active sessions counter">
       <div class="widget-header">
-        <span class="widget-label">Active Sessions</span>
+        <span class="widget-label" data-i18n="ops.sessions">Active Sessions</span>
       </div>
       <div class="widget-value" id="sessions-val" aria-live="polite">0</div>
-      <div class="widget-sub">Authenticated domain users</div>
+      <div class="widget-sub" data-i18n="ops.sessions_sub">Authenticated domain users</div>
     </div>
 
     <!-- VPN tunnel -->
     <div class="noc-widget" aria-label="VPN tunnel status">
       <div class="widget-header">
-        <span class="widget-label">IPsec Tunnel</span>
+        <span class="widget-label" data-i18n="ops.vpn">IPsec Tunnel</span>
         <span class="status-dot" id="vpn-dot" aria-hidden="true"></span>
       </div>
       <div class="widget-value accent-green" id="vpn-status">ESTABLISHED</div>
-      <div class="widget-sub">Site-A ↔ Site-B | IKEv2/AES-256</div>
+      <div class="widget-sub" data-i18n="ops.vpn_sub">Site-A ↔ Site-B | IKEv2/AES-256</div>
     </div>
 
     <!-- Service status -->
     <div class="noc-widget wide" aria-label="Service health status">
       <div class="widget-header">
-        <span class="widget-label">Service Health</span>
+        <span class="widget-label" data-i18n="ops.services">Service Health</span>
       </div>
       <div class="service-list" id="service-list" aria-label="Services status list"></div>
     </div>
@@ -268,8 +269,8 @@
     <!-- Syslog -->
     <div class="noc-widget full" aria-label="System log viewer">
       <div class="widget-header">
-        <span class="widget-label">Syslog Feed</span>
-        <span class="widget-sub">Live — most recent entries</span>
+        <span class="widget-label" data-i18n="ops.syslog">Syslog Feed</span>
+        <span class="widget-sub" data-i18n="ops.syslog_sub">Live — most recent entries</span>
       </div>
       <div class="syslog-window" id="syslog" aria-live="polite" aria-label="Syslog output" role="log"></div>
     </div>
@@ -279,7 +280,7 @@
 </main>
 
 <footer id="footer" role="contentinfo">
-  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+  <span>ED-OPS</span> // <span data-i18n="footer.text">Elio Dages — Network &amp; Infrastructure Engineer</span>
 </footer>
 
 <script>

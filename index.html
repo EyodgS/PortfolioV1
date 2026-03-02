@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/i18n.js"></script>
   <style>
     /* ---- Boot overlay ---- */
     #boot-overlay .boot-progress-bar {
@@ -200,18 +201,18 @@
       <div class="hero-eyebrow">
         <span class="status-indicator">
           <span class="status-dot" aria-hidden="true"></span>
-          Systems Operational
+          <span data-i18n="hero.status">Systems Operational</span>
         </span>
         <span>//</span>
-        <span>NOC Dashboard</span>
+        <span data-i18n="hero.noc">NOC Dashboard</span>
       </div>
 
       <h1 id="hero-heading">
         <span class="name">Elio Dages</span>
       </h1>
-      <p class="role-line">Network &amp; Infrastructure Engineer</p>
+      <p class="role-line" data-i18n="hero.role">Network &amp; Infrastructure Engineer</p>
 
-      <p class="hero-bio">
+      <p class="hero-bio" data-i18n="hero.bio">
         Network engineer specialized in infrastructure deployment, enterprise networking and automation.
         Focused on building resilient, observable and secure environments, bridging traditional system
         administration with modern DevOps practices.
@@ -219,11 +220,11 @@
       </p>
 
       <nav class="hero-actions" aria-label="Quick navigation">
-        <a href="terminal.html" class="btn btn-primary">$ terminal</a>
-        <a href="lab.html" class="btn">Network Lab</a>
-        <a href="expertise.html" class="btn">Expertise</a>
-        <a href="projects.html" class="btn">Projects</a>
-        <a href="ops.html" class="btn">NOC View</a>
+        <a href="terminal.html" class="btn btn-primary" data-i18n="hero.btn_terminal">$ terminal</a>
+        <a href="lab.html" class="btn" data-i18n="hero.btn_lab">Network Lab</a>
+        <a href="expertise.html" class="btn" data-i18n="hero.btn_expertise">Expertise</a>
+        <a href="projects.html" class="btn" data-i18n="hero.btn_projects">Projects</a>
+        <a href="ops.html" class="btn" data-i18n="hero.btn_ops">NOC View</a>
       </nav>
     </div>
   </section>
@@ -234,20 +235,20 @@
       <div class="divider"></div>
       <div class="info-grid">
         <div class="info-card">
-          <div class="ic-label">Focus</div>
-          <div class="ic-value"><span class="accent">Enterprise Networking</span> &amp; Automation</div>
+          <div class="ic-label" data-i18n="info.focus_label">Focus</div>
+          <div class="ic-value"><span class="accent" data-i18n="info.focus_value">Enterprise Networking &amp; Automation</span></div>
         </div>
         <div class="info-card">
-          <div class="ic-label">Core Stack</div>
-          <div class="ic-value">pfSense · AD DS · Ansible · Proxmox</div>
+          <div class="ic-label" data-i18n="info.stack_label">Core Stack</div>
+          <div class="ic-value" data-i18n="info.stack_value">pfSense · AD DS · Ansible · Proxmox</div>
         </div>
         <div class="info-card">
-          <div class="ic-label">Lab Status</div>
-          <div class="ic-value"><span class="accent">●</span> Active — Continuous development</div>
+          <div class="ic-label" data-i18n="info.lab_label">Lab Status</div>
+          <div class="ic-value"><span class="accent">●</span> <span data-i18n="info.lab_value">Active — Continuous development</span></div>
         </div>
         <div class="info-card">
-          <div class="ic-label">Approach</div>
-          <div class="ic-value">Infrastructure-first · Automate everything</div>
+          <div class="ic-label" data-i18n="info.approach_label">Approach</div>
+          <div class="ic-value" data-i18n="info.approach_value">Infrastructure-first · Automate everything</div>
         </div>
       </div>
     </div>
@@ -256,51 +257,54 @@
 </main>
 
 <footer id="footer" role="contentinfo">
-  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+  <span>ED-OPS</span> // <span data-i18n="footer.text">Elio Dages — Network &amp; Infrastructure Engineer</span>
 </footer>
 
 <script>
   /* ---- Boot Sequence ---- */
   (function () {
-    const LINES = [
-      { text: 'Initializing ED-OPS...', status: 'OK' },
-      { text: 'Loading network modules...', status: 'OK' },
-      { text: 'Mounting infrastructure...', status: 'OK' },
-      { text: 'Starting monitoring services...', status: 'OK' },
-      { text: 'Verifying credentials...', status: 'OK' },
-      { text: 'Access granted.', status: null, accent: true },
+    var i18n = window.EDOpsI18n;
+    function tr(key, fallback) { return (i18n ? i18n.t(key) : fallback) || fallback; }
+
+    var LINES = [
+      { key: 'boot.line1', text: 'Initializing ED-OPS...',          status: 'OK' },
+      { key: 'boot.line2', text: 'Loading network modules...',       status: 'OK' },
+      { key: 'boot.line3', text: 'Mounting infrastructure...',       status: 'OK' },
+      { key: 'boot.line4', text: 'Starting monitoring services...',  status: 'OK' },
+      { key: 'boot.line5', text: 'Verifying credentials...',         status: 'OK' },
+      { key: 'boot.line6', text: 'Access granted.',                  status: null, accent: true },
     ];
 
-    const container = document.getElementById('boot-lines');
-    const bar = document.getElementById('boot-bar');
-    const overlay = document.getElementById('boot-overlay');
-    const main = document.getElementById('main-content');
+    var container = document.getElementById('boot-lines');
+    var bar       = document.getElementById('boot-bar');
+    var overlay   = document.getElementById('boot-overlay');
+    var main      = document.getElementById('main-content');
 
-    let idx = 0;
+    var idx = 0;
 
     function showNext() {
       if (idx >= LINES.length) {
         // Finished — animate out
         bar.style.width = '100%';
-        setTimeout(() => {
+        setTimeout(function () {
           overlay.classList.add('fade-out');
           main.style.opacity = '1';
-          setTimeout(() => { overlay.style.display = 'none'; }, 550);
+          setTimeout(function () { overlay.style.display = 'none'; }, 550);
         }, 400);
         return;
       }
 
-      const item = LINES[idx];
-      const div = document.createElement('div');
+      var item = LINES[idx];
+      var div = document.createElement('div');
       div.className = 'boot-line' + (item.accent ? ' accent-green' : '');
 
-      let html = `<span class="prefix">[  SYS  ]</span> ${escapeHTML(item.text)}`;
-      if (item.status) html += `<span class="ok"> ${item.status}</span>`;
+      var lineText = tr(item.key, item.text);
+      var html = '<span class="prefix">[  SYS  ]</span> ' + escapeHTML(lineText);
+      if (item.status) html += '<span class="ok"> ' + item.status + '</span>';
       div.innerHTML = html;
 
       container.appendChild(div);
-      // Trigger CSS transition
-      requestAnimationFrame(() => { div.classList.add('visible'); });
+      requestAnimationFrame(function () { div.classList.add('visible'); });
 
       bar.style.width = ((idx + 1) / LINES.length * 100) + '%';
       idx++;

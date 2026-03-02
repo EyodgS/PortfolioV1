@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/i18n.js"></script>
   <style>
     .domains-grid {
       display: grid;
@@ -109,9 +110,9 @@
   <div class="container">
     <section class="section" aria-labelledby="expertise-heading">
       <header class="section-header">
-        <p class="section-tag">// Domains of Operation</p>
-        <h1 id="expertise-heading">Technical Expertise</h1>
-        <p>Engineered capability domains — each built through hands-on lab work, production-equivalent configurations and continuous iteration.</p>
+        <p class="section-tag" data-i18n="expertise.tag">// Domains of Operation</p>
+        <h1 id="expertise-heading" data-i18n="expertise.title">Technical Expertise</h1>
+        <p data-i18n="expertise.desc">Engineered capability domains — each built through hands-on lab work, production-equivalent configurations and continuous iteration.</p>
       </header>
 
       <div class="domains-grid" id="domains-grid" aria-label="Expertise domains"></div>
@@ -121,8 +122,8 @@
 
     <section class="tools-section" aria-labelledby="tools-heading">
       <header class="section-header">
-        <p class="section-tag">// Tooling &amp; Stack</p>
-        <h2 id="tools-heading">Technologies &amp; Tools</h2>
+        <p class="section-tag" data-i18n="expertise.tools_tag">// Tooling &amp; Stack</p>
+        <h2 id="tools-heading" data-i18n="expertise.tools_title">Technologies &amp; Tools</h2>
       </header>
       <div class="tools-grid" id="tools-grid"></div>
     </section>
@@ -130,11 +131,10 @@
 </main>
 
 <footer id="footer" role="contentinfo">
-  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+  <span>ED-OPS</span> // <span data-i18n="footer.text">Elio Dages — Network &amp; Infrastructure Engineer</span>
 </footer>
 
 <script>
-  const DOMAIN_COLORS = {
     'network-architecture':       'var(--accent-green)',
     'infrastructure-automation':  'var(--accent-cyan)',
     'identity-access':            'var(--accent-orange)',

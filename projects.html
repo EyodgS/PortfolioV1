@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/i18n.js"></script>
   <style>
     /* ---- Filter bar ---- */
     .filter-bar {
@@ -136,9 +137,9 @@
   <div class="container">
     <section class="section" aria-labelledby="projects-heading">
       <header class="section-header">
-        <p class="section-tag">// Infrastructure Projects</p>
-        <h1 id="projects-heading">Active Projects</h1>
-        <p>Engineering-level projects built in personal lab environments. Each represents a focused implementation problem solved end-to-end.</p>
+        <p class="section-tag" data-i18n="projects.tag">// Infrastructure Projects</p>
+        <h1 id="projects-heading" data-i18n="projects.title">Active Projects</h1>
+        <p data-i18n="projects.desc">Engineering-level projects built in personal lab environments. Each represents a focused implementation problem solved end-to-end.</p>
       </header>
 
       <div class="filter-bar" role="group" aria-label="Filter by category" id="filter-bar"></div>
@@ -148,7 +149,7 @@
 </main>
 
 <footer id="footer" role="contentinfo">
-  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+  <span>ED-OPS</span> // <span data-i18n="footer.text">Elio Dages — Network &amp; Infrastructure Engineer</span>
 </footer>
 
 <script>
@@ -167,15 +168,21 @@
         '<p class="text-secondary">Could not load project data.</p>';
     });
 
+  function t(key, fallback) {
+    return (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fallback;
+  }
+
   function buildFilterBar() {
     const bar = document.getElementById('filter-bar');
     const categories = ['All', ...new Set(allProjects.map(p => p.category))];
 
     categories.forEach(cat => {
       const btn = document.createElement('button');
-      btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
-      btn.textContent = cat;
-      btn.setAttribute('aria-pressed', cat === 'All' ? 'true' : 'false');
+      const isAll = cat === 'All';
+      btn.className = 'filter-btn' + (isAll ? ' active' : '');
+      btn.textContent = isAll ? t('projects.filter_all', 'All') : cat;
+      if (isAll) btn.setAttribute('data-i18n', 'projects.filter_all');
+      btn.setAttribute('aria-pressed', isAll ? 'true' : 'false');
       btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-btn').forEach(b => {
           b.classList.remove('active');
@@ -213,10 +220,10 @@
         <h3>${escapeHTML(p.title)}</h3>
         <p class="pc-short">${escapeHTML(p.short)}</p>
         <div class="pc-tags">
-          ${p.tags.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}
+          ${p.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}
         </div>
         <button class="pc-expand-btn" aria-expanded="false" aria-controls="desc-${p.id}">
-          + View details
+          ${escapeHTML(t('projects.view_details', '+ View details'))}
         </button>
         <div class="pc-description" id="desc-${p.id}" role="region" aria-label="${escapeHTML(p.title)} details">
           ${escapeHTML(p.description)}
@@ -229,12 +236,24 @@
       btn.addEventListener('click', () => {
         const open = desc.classList.toggle('open');
         btn.setAttribute('aria-expanded', String(open));
-        btn.textContent = open ? '− Hide details' : '+ View details';
+        btn.textContent = open
+          ? t('projects.hide_details', '\u2212 Hide details')
+          : t('projects.view_details', '+ View details');
       });
 
       grid.appendChild(card);
     });
   }
+
+  // Re-render on language change to update translated strings
+  document.addEventListener('edops:langchange', function () {
+    if (!allProjects.length) return; // data not yet loaded
+    // Update "All" filter button text
+    const allBtn = document.querySelector('.filter-btn[data-i18n="projects.filter_all"]');
+    if (allBtn) allBtn.textContent = t('projects.filter_all', 'All');
+    // Re-render current filter to update expand button text
+    renderProjects(activeFilter);
+  });
 
   function escapeHTML(str) {
     return String(str)
