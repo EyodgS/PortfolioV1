@@ -106,6 +106,57 @@
       gap: 0.75rem;
     }
 
+    .hero-connect {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .btn-social {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+    }
+
+    .btn-social:hover {
+      background: rgba(0, 180, 216, 0.08);
+      box-shadow: var(--glow-cyan);
+      color: var(--accent-cyan);
+    }
+
+    .btn-social.btn-social-placeholder {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-social.btn-social-placeholder:hover {
+      background: transparent;
+      box-shadow: none;
+    }
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    .btn-social.btn-cv:hover {
+      background: rgba(0, 255, 136, 0.06);
+      box-shadow: var(--glow-green);
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -205,6 +256,8 @@
         </span>
         <span>//</span>
         <span data-i18n="hero.noc">NOC Dashboard</span>
+        <span>//</span>
+        <span data-i18n="hero.location">France</span>
       </div>
 
       <h1 id="hero-heading">
@@ -226,6 +279,14 @@
         <a href="projects.html" class="btn" data-i18n="hero.btn_projects">Projects</a>
         <a href="ops.html" class="btn" data-i18n="hero.btn_ops">NOC View</a>
       </nav>
+
+      <div class="hero-connect" aria-label="Contact and social links">
+        <a href="https://github.com/EyodgS" class="btn-social" target="_blank" rel="noopener noreferrer" data-i18n="hero.btn_github">↗ GitHub</a>
+        <!-- TODO: replace href with actual LinkedIn profile URL, e.g. https://linkedin.com/in/elio-dages -->
+        <a href="#" class="btn-social btn-social-placeholder" target="_blank" rel="noopener noreferrer" data-i18n="hero.btn_linkedin" title="LinkedIn — à compléter / add your LinkedIn URL">↗ LinkedIn</a>
+        <!-- TODO: add CV file at assets/cv-elio-dages.pdf -->
+        <a href="assets/cv-elio-dages.pdf" class="btn-social btn-cv btn-social-placeholder" download data-i18n="hero.btn_cv" title="CV — à compléter / add cv-elio-dages.pdf to assets/">↓ Download CV</a>
+      </div>
     </div>
   </section>
 
