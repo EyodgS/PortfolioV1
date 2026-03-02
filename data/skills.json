@@ -1,0 +1,48 @@
+{
+  "domains": [
+    {
+      "id": "network-architecture",
+      "name": "Network Architecture",
+      "icon": "🔗",
+      "items": ["pfSense / OPNsense", "VLAN design & 802.1Q trunking", "Routing (OSPF, static)", "DNS / DHCP", "IPv4 subnetting & IP planning", "TCP/IP stack internals"]
+    },
+    {
+      "id": "infrastructure-automation",
+      "name": "Infrastructure Automation",
+      "icon": "⚙️",
+      "items": ["Ansible (playbooks, roles, Vault)", "PowerShell scripting", "MDT / WDS deployment", "Bash scripting", "Terraform (in progress)", "Chocolatey package management"]
+    },
+    {
+      "id": "identity-access",
+      "name": "Identity & Access Management",
+      "icon": "🔐",
+      "items": ["Active Directory DS & DNS", "GPO design & CIS hardening", "Tier Model (PAW / Tier 0-2)", "PKI / Internal CA", "LAPS", "RBAC principles"]
+    },
+    {
+      "id": "secure-remote-access",
+      "name": "Secure Remote Access",
+      "icon": "🛡️",
+      "items": ["IPsec IKEv2 site-to-site VPN", "OpenVPN / WireGuard", "SSL/TLS certificate management", "Reverse proxy (Nginx / Traefik)", "Firewall rule design", "Zero Trust concepts"]
+    },
+    {
+      "id": "monitoring-observability",
+      "name": "Monitoring & Observability",
+      "icon": "📊",
+      "items": ["Prometheus + node_exporter", "Grafana dashboards", "Loki log aggregation", "Windows Event Forwarding", "SNMP polling", "Alertmanager notifications"]
+    },
+    {
+      "id": "incident-response",
+      "name": "Incident Response",
+      "icon": "🚨",
+      "items": ["Log analysis & correlation", "Event ID investigation (Windows)", "Network traffic analysis (Wireshark)", "Syslog event triage", "Security baselining", "Change management process"]
+    }
+  ],
+  "tools": {
+    "operating_systems": ["Windows Server 2019/2022", "Windows 10/11", "Debian", "Ubuntu Server", "Proxmox VE"],
+    "network": ["pfSense", "Cisco IOS (GNS3/PT)", "Wireshark", "nmap", "iperf3"],
+    "identity": ["Active Directory", "Microsoft LAPS", "Group Policy", "AD Certificate Services"],
+    "automation": ["Ansible", "PowerShell", "Bash", "MDT", "Git"],
+    "monitoring": ["Prometheus", "Grafana", "Loki", "Alertmanager", "GLPI"],
+    "security": ["CIS Benchmarks", "AppLocker", "Windows Defender", "Firewall audit"]
+  }
+}

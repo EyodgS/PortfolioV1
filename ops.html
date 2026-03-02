@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ED-OPS NOC dashboard — simulated network operations centre with live telemetry, metrics and syslog." />
+  <title>ED-OPS // NOC Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ---- NOC layout ---- */
+    .noc-page { padding: 1.5rem; }
+
+    .noc-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .noc-topbar .noc-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+    }
+
+    .noc-topbar .noc-title span { color: var(--accent-green); }
+
+    .noc-time {
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      letter-spacing: 0.05em;
+    }
+
+    /* ---- Dashboard grid ---- */
+    .noc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto;
+      gap: 1rem;
+    }
+
+    @media (max-width: 900px) {
+      .noc-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 580px) {
+      .noc-grid { grid-template-columns: 1fr; }
+    }
+
+    .noc-widget {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .noc-widget.wide { grid-column: span 2; }
+    .noc-widget.full { grid-column: span 3; }
+
+    @media (max-width: 900px) {
+      .noc-widget.full { grid-column: span 2; }
+    }
+
+    @media (max-width: 580px) {
+      .noc-widget.wide,
+      .noc-widget.full { grid-column: span 1; }
+    }
+
+    .widget-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .widget-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+    }
+
+    .widget-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      line-height: 1;
+    }
+
+    .widget-sub {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    /* ---- Gauge / bar ---- */
+    .gauge-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 0.25rem;
+    }
+
+    .gauge-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.8s ease;
+    }
+
+    .gauge-fill.green  { background: var(--accent-green); box-shadow: var(--glow-green); }
+    .gauge-fill.cyan   { background: var(--accent-cyan);  box-shadow: var(--glow-cyan); }
+    .gauge-fill.orange { background: var(--accent-orange); }
+    .gauge-fill.red    { background: var(--accent-red); }
+
+    /* ---- Canvas chart ---- */
+    #traffic-canvas {
+      width: 100%;
+      height: 120px;
+      display: block;
+      border-radius: 3px;
+    }
+
+    /* ---- Uptime ---- */
+    .uptime-counter {
+      font-size: clamp(1.1rem, 3vw, 1.8rem);
+      font-weight: 700;
+      color: var(--accent-green);
+      letter-spacing: 0.04em;
+    }
+
+    /* ---- Syslog ---- */
+    .syslog-window {
+      height: 200px;
+      overflow-y: auto;
+      font-size: 0.74rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.5rem 0.75rem;
+    }
+
+    .syslog-line { white-space: pre-wrap; word-break: break-all; }
+    .syslog-line .sl-ts   { color: var(--text-dim); margin-right: 0.5rem; }
+    .syslog-line .sl-host { color: var(--accent-cyan); margin-right: 0.5rem; }
+    .syslog-line .sl-proc { color: var(--accent-orange); margin-right: 0.5rem; }
+    .syslog-line .sl-msg  { color: var(--text-secondary); }
+    .syslog-line.warn .sl-msg  { color: var(--accent-yellow); }
+    .syslog-line.error .sl-msg { color: var(--accent-red); }
+
+    /* ---- Service status ---- */
+    .service-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .service-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .service-row .sr-name { color: var(--text-primary); }
+    .service-row .sr-status { display: flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; }
+  </style>
+</head>
+<body>
+<script src="components/navbar.js"></script>
+
+<main class="page-content noc-page" aria-label="NOC Dashboard">
+
+  <div class="noc-topbar">
+    <div class="noc-title"><span>ED-OPS</span> // NOC DASHBOARD — LIVE TELEMETRY (SIMULATED)</div>
+    <div class="noc-time" id="noc-clock" aria-live="polite" aria-label="Current time"></div>
+  </div>
+
+  <div class="noc-grid">
+
+    <!-- Uptime -->
+    <div class="noc-widget" aria-label="System uptime">
+      <div class="widget-header">
+        <span class="widget-label">System Uptime</span>
+        <span class="status-dot" aria-hidden="true"></span>
+      </div>
+      <div class="uptime-counter" id="uptime-counter" aria-live="polite">00:00:00:00</div>
+      <div class="widget-sub">Since <span id="uptime-since"></span></div>
+    </div>
+
+    <!-- CPU -->
+    <div class="noc-widget" aria-label="CPU utilisation">
+      <div class="widget-header">
+        <span class="widget-label">CPU Utilisation</span>
+        <span class="widget-value" id="cpu-val" aria-live="polite">0%</span>
+      </div>
+      <div class="gauge-bar"><div class="gauge-fill green" id="cpu-bar" style="width:0%"></div></div>
+      <div class="widget-sub">pfSense (4 vCPU)</div>
+    </div>
+
+    <!-- RAM -->
+    <div class="noc-widget" aria-label="Memory utilisation">
+      <div class="widget-header">
+        <span class="widget-label">Memory</span>
+        <span class="widget-value" id="ram-val" aria-live="polite">0%</span>
+      </div>
+      <div class="gauge-bar"><div class="gauge-fill cyan" id="ram-bar" style="width:0%"></div></div>
+      <div class="widget-sub">AD-DC01 (8 GB)</div>
+    </div>
+
+    <!-- Network traffic chart -->
+    <div class="noc-widget wide" aria-label="Network traffic chart">
+      <div class="widget-header">
+        <span class="widget-label">Network Traffic (Mbps)</span>
+        <span class="widget-sub" id="traffic-vals" aria-live="polite">↑ 0 Mbps  ↓ 0 Mbps</span>
+      </div>
+      <canvas id="traffic-canvas" role="img" aria-label="Network traffic graph"></canvas>
+    </div>
+
+    <!-- Disk -->
+    <div class="noc-widget" aria-label="Disk utilisation">
+      <div class="widget-header">
+        <span class="widget-label">Disk I/O</span>
+        <span class="widget-value" id="disk-val" aria-live="polite">0%</span>
+      </div>
+      <div class="gauge-bar"><div class="gauge-fill orange" id="disk-bar" style="width:0%"></div></div>
+      <div class="widget-sub">SRV-MON01 volume</div>
+    </div>
+
+    <!-- Active sessions -->
+    <div class="noc-widget" aria-label="Active sessions counter">
+      <div class="widget-header">
+        <span class="widget-label">Active Sessions</span>
+      </div>
+      <div class="widget-value" id="sessions-val" aria-live="polite">0</div>
+      <div class="widget-sub">Authenticated domain users</div>
+    </div>
+
+    <!-- VPN tunnel -->
+    <div class="noc-widget" aria-label="VPN tunnel status">
+      <div class="widget-header">
+        <span class="widget-label">IPsec Tunnel</span>
+        <span class="status-dot" id="vpn-dot" aria-hidden="true"></span>
+      </div>
+      <div class="widget-value accent-green" id="vpn-status">ESTABLISHED</div>
+      <div class="widget-sub">Site-A ↔ Site-B | IKEv2/AES-256</div>
+    </div>
+
+    <!-- Service status -->
+    <div class="noc-widget wide" aria-label="Service health status">
+      <div class="widget-header">
+        <span class="widget-label">Service Health</span>
+      </div>
+      <div class="service-list" id="service-list" aria-label="Services status list"></div>
+    </div>
+
+    <!-- Syslog -->
+    <div class="noc-widget full" aria-label="System log viewer">
+      <div class="widget-header">
+        <span class="widget-label">Syslog Feed</span>
+        <span class="widget-sub">Live — most recent entries</span>
+      </div>
+      <div class="syslog-window" id="syslog" aria-live="polite" aria-label="Syslog output" role="log"></div>
+    </div>
+
+  </div><!-- /noc-grid -->
+
+</main>
+
+<footer id="footer" role="contentinfo">
+  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+</footer>
+
+<script>
+/* ============================================================
+   NOC Dashboard — Simulated Live Telemetry
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* ---- Config ---- */
+  // Uptime start date — configurable
+  const UPTIME_START = new Date('2024-09-01T00:00:00Z');
+
+  /* ---- Clock ---- */
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('noc-clock').textContent = now.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  /* ---- Uptime counter ---- */
+  const uptimeSinceEl = document.getElementById('uptime-since');
+  uptimeSinceEl.textContent = UPTIME_START.toISOString().slice(0, 10);
+
+  function updateUptime() {
+    const elapsed = Date.now() - UPTIME_START.getTime();
+    const totalSec = Math.floor(elapsed / 1000);
+    const s  = totalSec % 60;
+    const m  = Math.floor(totalSec / 60) % 60;
+    const h  = Math.floor(totalSec / 3600) % 24;
+    const d  = Math.floor(totalSec / 86400);
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('uptime-counter').textContent =
+      `${pad(d)}d ${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+  updateUptime();
+  setInterval(updateUptime, 1000);
+
+  /* ---- Random helpers ---- */
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+  function randInt(min, max) { return Math.floor(rand(min, max + 1)); }
+  function smoothValue(current, target, alpha) { return current + (target - current) * alpha; }
+
+  /* ---- CPU & RAM ---- */
+  let cpuTarget = 35, cpuCurrent = 35;
+  let ramTarget = 62, ramCurrent = 62;
+  let diskTarget = 48, diskCurrent = 48;
+  let sessionsTarget = 7, sessionsCurrent = 7;
+
+  function updateGauge(id, barId, value, warn = 75, critical = 90) {
+    const pct = Math.round(value);
+    document.getElementById(id).textContent = pct + '%';
+    const bar = document.getElementById(barId);
+    bar.style.width = pct + '%';
+    bar.className = 'gauge-fill ' + (pct >= critical ? 'red' : pct >= warn ? 'orange' : pct >= 55 ? 'cyan' : 'green');
+  }
+
+  function updateMetrics() {
+    // Drift targets randomly
+    if (Math.random() < 0.12) cpuTarget    = rand(15, 85);
+    if (Math.random() < 0.08) ramTarget    = rand(50, 78);
+    if (Math.random() < 0.06) diskTarget   = rand(30, 65);
+    if (Math.random() < 0.05) sessionsTarget = randInt(3, 14);
+
+    cpuCurrent     = smoothValue(cpuCurrent,     cpuTarget,     0.15);
+    ramCurrent     = smoothValue(ramCurrent,     ramTarget,     0.1);
+    diskCurrent    = smoothValue(diskCurrent,    diskTarget,    0.08);
+    sessionsCurrent = smoothValue(sessionsCurrent, sessionsTarget, 0.12);
+
+    updateGauge('cpu-val', 'cpu-bar', cpuCurrent);
+    updateGauge('ram-val', 'ram-bar', ramCurrent);
+    updateGauge('disk-val', 'disk-bar', diskCurrent);
+    document.getElementById('sessions-val').textContent = Math.round(sessionsCurrent);
+  }
+
+  /* ---- Traffic Canvas ---- */
+  const CANVAS_POINTS = 60;
+  const txData = Array.from({ length: CANVAS_POINTS }, () => rand(5, 40));
+  const rxData = Array.from({ length: CANVAS_POINTS }, () => rand(10, 60));
+
+  const canvas = document.getElementById('traffic-canvas');
+  const ctx    = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function drawTrafficLine(data, color, alpha) {
+    const W = canvas.width, H = canvas.height;
+    const step = W / (CANVAS_POINTS - 1);
+    const max  = 100;
+
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth   = 1.5;
+    ctx.globalAlpha = alpha;
+
+    data.forEach((v, i) => {
+      const x = i * step;
+      const y = H - (v / max) * H;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // Fill under line
+    ctx.beginPath();
+    data.forEach((v, i) => {
+      const x = i * step;
+      const y = H - (v / max) * H;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.lineTo((CANVAS_POINTS - 1) * step, H);
+    ctx.lineTo(0, H);
+    ctx.closePath();
+    const gradient = ctx.createLinearGradient(0, 0, 0, H);
+    gradient.addColorStop(0, color.replace(')', ', 0.15)').replace('rgb', 'rgba'));
+    gradient.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gradient;
+    ctx.globalAlpha = alpha * 0.5;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  function updateTraffic() {
+    txData.push(rand(5, 45));
+    rxData.push(rand(10, 65));
+    if (txData.length > CANVAS_POINTS) txData.shift();
+    if (rxData.length > CANVAS_POINTS) rxData.shift();
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Grid lines
+    ctx.strokeStyle = '#21262d';
+    ctx.lineWidth = 1;
+    ctx.globalAlpha = 0.5;
+    for (let i = 0; i <= 4; i++) {
+      const y = (canvas.height / 4) * i;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    drawTrafficLine(txData, '#00ff88', 0.9);
+    drawTrafficLine(rxData, '#00b4d8', 0.9);
+
+    const tx = txData[txData.length - 1].toFixed(1);
+    const rx = rxData[rxData.length - 1].toFixed(1);
+    document.getElementById('traffic-vals').textContent = `↑ ${tx} Mbps  ↓ ${rx} Mbps`;
+  }
+
+  /* ---- Service Status ---- */
+  const SERVICES = [
+    { name: 'AD-DC01 (AD DS / DNS)', status: 'online' },
+    { name: 'pfSense-FW01 (Firewall)', status: 'online' },
+    { name: 'SRV-MON01 (Prometheus/Grafana)', status: 'online' },
+    { name: 'SRV-PROXY01 (Nginx Reverse Proxy)', status: 'online' },
+    { name: 'SRV-GLPI01 (GLPI)', status: 'online' },
+    { name: 'IPsec Tunnel Site-A↔B', status: 'online' },
+  ];
+
+  function buildServiceList() {
+    const list = document.getElementById('service-list');
+    SERVICES.forEach((svc, i) => {
+      const row = document.createElement('div');
+      row.className = 'service-row';
+      row.id = `svc-${i}`;
+      row.innerHTML = `
+        <span class="sr-name">${svc.name}</span>
+        <span class="sr-status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span class="sr-state">ONLINE</span>
+        </span>
+      `;
+      list.appendChild(row);
+    });
+  }
+  buildServiceList();
+
+  /* ---- Syslog ---- */
+  const SYSLOG_HOSTS   = ['pfSense', 'AD-DC01', 'SRV-MON01', 'SRV-PROXY01', 'SRV-GLPI01'];
+  const SYSLOG_PROCS   = ['kernel', 'sshd', 'nginx', 'firewall', 'ntpd', 'cron', 'LSASS', 'WinRM'];
+  const SYSLOG_MSGS_INFO = [
+    'Connection accepted from 10.10.10.5',
+    'Certificate renewed for lab.edops.local',
+    'IPsec Phase 2 rekeyed successfully',
+    'NTP sync completed — offset 0.003s',
+    'Backup completed — 2847 objects',
+    'DNS query resolved in 1ms',
+    'Prometheus scrape completed — 128 metrics',
+    'DHCP lease renewed for 10.10.20.45',
+    'GPO applied successfully — 4 policies',
+    'Scheduled task executed — baseline_audit.ps1',
+    'VLAN10 → VLAN30 packet forwarded',
+    'Loki log ingestion — 1.2k lines/min',
+  ];
+  const SYSLOG_MSGS_WARN = [
+    'Failed login attempt from 10.10.20.31 (user: jdoe)',
+    'SNMP trap: high CPU on pfSense (82%)',
+    'Certificate expiry in 14 days: wildcard.edops.local',
+    'DNS timeout from upstream resolver',
+    'Disk usage above 80% on /var/log',
+  ];
+  const SYSLOG_MSGS_ERROR = [
+    'IPsec DPD: peer unreachable — retrying',
+    'SMB signing negotiation failed for host 10.10.20.15',
+    'Kerberos pre-auth failure: SRVMON$',
+  ];
+
+  const syslog = document.getElementById('syslog');
+  const MAX_LOG_LINES = 120;
+
+  function addLogLine() {
+    const now  = new Date();
+    const ts   = now.toISOString().replace('T', ' ').slice(0, 19);
+    const host = SYSLOG_HOSTS[randInt(0, SYSLOG_HOSTS.length - 1)];
+    const proc = SYSLOG_PROCS[randInt(0, SYSLOG_PROCS.length - 1)];
+
+    const roll = Math.random();
+    let level, msg;
+    if (roll < 0.06) {
+      level = 'error';
+      msg = SYSLOG_MSGS_ERROR[randInt(0, SYSLOG_MSGS_ERROR.length - 1)];
+    } else if (roll < 0.18) {
+      level = 'warn';
+      msg = SYSLOG_MSGS_WARN[randInt(0, SYSLOG_MSGS_WARN.length - 1)];
+    } else {
+      level = '';
+      msg = SYSLOG_MSGS_INFO[randInt(0, SYSLOG_MSGS_INFO.length - 1)];
+    }
+
+    const line = document.createElement('div');
+    line.className = 'syslog-line' + (level ? ' ' + level : '');
+    line.innerHTML =
+      `<span class="sl-ts">${ts}</span>` +
+      `<span class="sl-host">${host}</span>` +
+      `<span class="sl-proc">${proc}[${randInt(100, 9999)}]:</span>` +
+      `<span class="sl-msg">${escapeHTML(msg)}</span>`;
+
+    syslog.appendChild(line);
+
+    // Prune old lines
+    while (syslog.children.length > MAX_LOG_LINES) {
+      syslog.removeChild(syslog.firstChild);
+    }
+
+    syslog.scrollTop = syslog.scrollHeight;
+  }
+
+  function escapeHTML(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /* ---- Main animation loop ---- */
+  function tick() {
+    updateMetrics();
+    updateTraffic();
+    addLogLine();
+  }
+
+  // Seed initial data
+  for (let i = 0; i < 12; i++) addLogLine();
+  tick();
+
+  setInterval(tick, 2000);
+
+})();
+</script>
+</body>
+</html>

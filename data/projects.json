@@ -1,0 +1,65 @@
+[
+  {
+    "id": "enterprise-lab",
+    "title": "Enterprise Lab Infrastructure",
+    "short": "Virtualized enterprise network stack with full AD integration, VLAN segmentation, and centralized management.",
+    "description": "Designed and deployed a full enterprise-grade lab environment using Proxmox VE as the hypervisor. The stack includes an AD DS domain, segmented VLANs enforced via pfSense firewall, a RADIUS authentication server, and centralized logging. The goal was to mirror a production SME environment to validate hardening and automation procedures.",
+    "tags": ["Proxmox", "pfSense", "Active Directory", "VLAN", "DNS", "DHCP"],
+    "status": "active",
+    "category": "Infrastructure"
+  },
+  {
+    "id": "ad-tier-model",
+    "title": "Active Directory Tier Model",
+    "short": "Implementation of Microsoft's three-tier administrative model to contain credential theft and lateral movement.",
+    "description": "Deployed the Microsoft Tier Model (Tier 0 / Tier 1 / Tier 2) across the lab AD forest. Created dedicated Privileged Access Workstations (PAW) for Tier 0 administration. Enforced logon restrictions via GPO to prevent privileged credentials from being exposed on lower-trust systems.",
+    "tags": ["Active Directory", "GPO", "Security", "IAM", "PAW"],
+    "status": "active",
+    "category": "Identity & Security"
+  },
+  {
+    "id": "gpo-pki",
+    "title": "GPO Hardening & PKI Deployment",
+    "short": "Enterprise PKI with internal CA, certificate auto-enrollment, and comprehensive GPO security baselines.",
+    "description": "Deployed a two-tier PKI (Offline Root CA + Issuing CA) within the lab domain. Integrated auto-enrollment via GPO for workstation and server certificates. Applied CIS Benchmark-aligned Group Policy baselines for Windows 10/11 and Windows Server. Hardening includes AppLocker policies, LAPS deployment, SMB signing enforcement, and audit policy configuration.",
+    "tags": ["PKI", "GPO", "LAPS", "CIS Benchmark", "AppLocker", "Windows Server"],
+    "status": "active",
+    "category": "Identity & Security"
+  },
+  {
+    "id": "automated-deployment",
+    "title": "Automated Workstation Deployment",
+    "short": "Zero-touch Windows deployment pipeline using MDT, task sequences, and post-deployment PowerShell automation.",
+    "description": "Built an MDT deployment share with a customized task sequence for Windows 11 workstation provisioning. Post-deployment automation via PowerShell handles domain join, software installation (Chocolatey), baseline hardening scripts, and Intune enrollment preparation. Reduces provisioning time from hours to under 30 minutes with zero manual interaction.",
+    "tags": ["MDT", "PowerShell", "Windows", "Automation", "Chocolatey", "Intune"],
+    "status": "active",
+    "category": "Automation"
+  },
+  {
+    "id": "vpn-architecture",
+    "title": "Secure Site-to-Site VPN Architecture",
+    "short": "IPsec IKEv2 site-to-site VPN between segmented lab sites with firewall policy enforcement and route-based failover.",
+    "description": "Configured IPsec IKEv2 tunnels between two pfSense instances simulating geographically separated sites. Each site implements VLAN segmentation with inter-VLAN routing rules. Traffic policies enforce least-privilege routing between segments. Includes monitoring of tunnel state via pfSense dashboard and SNMP trap to a central syslog receiver.",
+    "tags": ["IPsec", "IKEv2", "pfSense", "VPN", "Firewall", "Segmentation"],
+    "status": "active",
+    "category": "Network"
+  },
+  {
+    "id": "monitoring-stack",
+    "title": "Monitoring Stack",
+    "short": "Grafana + Prometheus + Loki observability stack with node exporters, network device polling, and syslog ingestion.",
+    "description": "Deployed a full observability stack: Prometheus scrapes node exporters on all lab hosts, SNMP exporter polls network devices, and Loki aggregates syslog from pfSense, Windows Event Forwarding, and Linux hosts. Grafana dashboards provide real-time host health, network throughput, and security event correlation. Alertmanager sends notifications on threshold breaches.",
+    "tags": ["Grafana", "Prometheus", "Loki", "SNMP", "Syslog", "Alertmanager"],
+    "status": "active",
+    "category": "Observability"
+  },
+  {
+    "id": "iac-exploration",
+    "title": "Infrastructure as Code Exploration",
+    "short": "Ansible playbooks for automated provisioning of lab services, configuration drift detection, and idempotent system state management.",
+    "description": "Developed Ansible playbooks to automate the provisioning of core lab services (DNS, NTP, baseline hardening, package management) on Debian and Windows hosts. Uses Ansible Vault for secrets management and Git for playbook versioning. Exploring Terraform for Proxmox VM provisioning as a next step toward full IaC coverage of the lab.",
+    "tags": ["Ansible", "Terraform", "IaC", "Proxmox", "Linux", "Windows"],
+    "status": "active",
+    "category": "Automation"
+  }
+]

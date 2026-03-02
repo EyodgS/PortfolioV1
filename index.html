@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ED-OPS — Network &amp; Infrastructure Engineer portfolio. Elio Dages — enterprise networking, infrastructure automation, and secure environments." />
+  <title>ED-OPS // Elio Dages — Network &amp; Infrastructure Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ---- Boot overlay ---- */
+    #boot-overlay .boot-progress-bar {
+      width: min(560px, 90vw);
+      height: 2px;
+      background: var(--border);
+      border-radius: 1px;
+      margin-top: 1.5rem;
+      overflow: hidden;
+    }
+    #boot-overlay .boot-progress-bar .bar-fill {
+      height: 100%;
+      background: var(--accent-green);
+      width: 0%;
+      transition: width 0.3s ease;
+      box-shadow: var(--glow-green);
+    }
+
+    /* ---- Hero ---- */
+    .hero {
+      min-height: calc(100vh - 52px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 40%, rgba(0, 255, 136, 0.04) 0%, transparent 70%),
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(33,38,45,0.5) 39px, rgba(33,38,45,0.5) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(33,38,45,0.3) 39px, rgba(33,38,45,0.3) 40px);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 2rem 1.5rem;
+      text-align: left;
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+    }
+
+    .hero-eyebrow .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--accent-green);
+    }
+
+    .hero h1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .hero h1 .name {
+      color: var(--text-primary);
+    }
+
+    .hero .role-line {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--accent-cyan);
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+
+    .hero-bio {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 640px;
+      border-left: 2px solid var(--border-bright);
+      padding-left: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-bright);
+      color: var(--text-primary);
+      background: var(--bg-card);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      color: var(--accent-green);
+      border-color: var(--accent-green);
+      background: rgba(0, 255, 136, 0.05);
+      box-shadow: var(--glow-green);
+    }
+
+    .btn-primary {
+      color: var(--bg-primary);
+      background: var(--accent-green);
+      border-color: var(--accent-green);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover {
+      background: #00e878;
+      border-color: #00e878;
+      color: var(--bg-primary);
+      box-shadow: var(--glow-green);
+    }
+
+    /* ---- Info grid ---- */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      padding: 3rem 0;
+    }
+
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      transition: border-color var(--transition);
+    }
+
+    .info-card:hover { border-color: var(--border-bright); }
+
+    .info-card .ic-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+    }
+
+    .info-card .ic-value {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+
+    .info-card .ic-value .accent { color: var(--accent-green); }
+  </style>
+</head>
+<body>
+
+<!-- Boot Overlay -->
+<div id="boot-overlay" role="status" aria-live="polite" aria-label="System boot sequence">
+  <div class="boot-logo">ED-OPS</div>
+  <div class="boot-lines" id="boot-lines"></div>
+  <div class="boot-progress-bar">
+    <div class="bar-fill" id="boot-bar"></div>
+  </div>
+</div>
+
+<!-- Navbar injected by navbar.js -->
+<script src="components/navbar.js"></script>
+
+<main class="page-content" id="main-content" aria-label="Main content" style="opacity:0;transition:opacity 0.6s ease;">
+
+  <!-- Hero Section -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <span class="status-indicator">
+          <span class="status-dot" aria-hidden="true"></span>
+          Systems Operational
+        </span>
+        <span>//</span>
+        <span>NOC Dashboard</span>
+      </div>
+
+      <h1 id="hero-heading">
+        <span class="name">Elio Dages</span>
+      </h1>
+      <p class="role-line">Network &amp; Infrastructure Engineer</p>
+
+      <p class="hero-bio">
+        Network engineer specialized in infrastructure deployment, enterprise networking and automation.
+        Focused on building resilient, observable and secure environments, bridging traditional system
+        administration with modern DevOps practices.
+        Operating personal lab environments to design, break and rebuild infrastructures continuously.
+      </p>
+
+      <nav class="hero-actions" aria-label="Quick navigation">
+        <a href="terminal.html" class="btn btn-primary">$ terminal</a>
+        <a href="lab.html" class="btn">Network Lab</a>
+        <a href="expertise.html" class="btn">Expertise</a>
+        <a href="projects.html" class="btn">Projects</a>
+        <a href="ops.html" class="btn">NOC View</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Info Grid -->
+  <section class="section" aria-label="Profile summary">
+    <div class="container">
+      <div class="divider"></div>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="ic-label">Focus</div>
+          <div class="ic-value"><span class="accent">Enterprise Networking</span> &amp; Automation</div>
+        </div>
+        <div class="info-card">
+          <div class="ic-label">Core Stack</div>
+          <div class="ic-value">pfSense · AD DS · Ansible · Proxmox</div>
+        </div>
+        <div class="info-card">
+          <div class="ic-label">Lab Status</div>
+          <div class="ic-value"><span class="accent">●</span> Active — Continuous development</div>
+        </div>
+        <div class="info-card">
+          <div class="ic-label">Approach</div>
+          <div class="ic-value">Infrastructure-first · Automate everything</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="footer" role="contentinfo">
+  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+</footer>
+
+<script>
+  /* ---- Boot Sequence ---- */
+  (function () {
+    const LINES = [
+      { text: 'Initializing ED-OPS...', status: 'OK' },
+      { text: 'Loading network modules...', status: 'OK' },
+      { text: 'Mounting infrastructure...', status: 'OK' },
+      { text: 'Starting monitoring services...', status: 'OK' },
+      { text: 'Verifying credentials...', status: 'OK' },
+      { text: 'Access granted.', status: null, accent: true },
+    ];
+
+    const container = document.getElementById('boot-lines');
+    const bar = document.getElementById('boot-bar');
+    const overlay = document.getElementById('boot-overlay');
+    const main = document.getElementById('main-content');
+
+    let idx = 0;
+
+    function showNext() {
+      if (idx >= LINES.length) {
+        // Finished — animate out
+        bar.style.width = '100%';
+        setTimeout(() => {
+          overlay.classList.add('fade-out');
+          main.style.opacity = '1';
+          setTimeout(() => { overlay.style.display = 'none'; }, 550);
+        }, 400);
+        return;
+      }
+
+      const item = LINES[idx];
+      const div = document.createElement('div');
+      div.className = 'boot-line' + (item.accent ? ' accent-green' : '');
+
+      let html = `<span class="prefix">[  SYS  ]</span> ${escapeHTML(item.text)}`;
+      if (item.status) html += `<span class="ok"> ${item.status}</span>`;
+      div.innerHTML = html;
+
+      container.appendChild(div);
+      // Trigger CSS transition
+      requestAnimationFrame(() => { div.classList.add('visible'); });
+
+      bar.style.width = ((idx + 1) / LINES.length * 100) + '%';
+      idx++;
+      setTimeout(showNext, 350 + Math.random() * 150);
+    }
+
+    function escapeHTML(str) {
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    setTimeout(showNext, 300);
+  })();
+</script>
+
+</body>
+</html>

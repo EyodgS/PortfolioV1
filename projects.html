@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ED-OPS projects — enterprise lab, AD tier model, GPO hardening, automated deployment, VPN, monitoring stack and IaC." />
+  <title>ED-OPS // Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ---- Filter bar ---- */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-btn {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.3rem 0.75rem;
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: all var(--transition);
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      background: rgba(0, 180, 216, 0.06);
+    }
+
+    /* ---- Projects grid ---- */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .project-card:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-2px);
+    }
+
+    .project-card .pc-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .project-card .pc-category {
+      color: var(--accent-cyan);
+    }
+
+    .project-card h3 {
+      font-size: 1rem;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .project-card .pc-short {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .project-card .pc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-top: auto;
+    }
+
+    .project-card .pc-expand-btn {
+      background: none;
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      text-align: left;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .project-card .pc-expand-btn:hover {
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .project-card .pc-description {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      border-top: 1px solid var(--border);
+      padding-top: 0.75rem;
+      display: none;
+    }
+
+    .project-card .pc-description.open {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<script src="components/navbar.js"></script>
+
+<main class="page-content" aria-label="Projects page">
+  <div class="container">
+    <section class="section" aria-labelledby="projects-heading">
+      <header class="section-header">
+        <p class="section-tag">// Infrastructure Projects</p>
+        <h1 id="projects-heading">Active Projects</h1>
+        <p>Engineering-level projects built in personal lab environments. Each represents a focused implementation problem solved end-to-end.</p>
+      </header>
+
+      <div class="filter-bar" role="group" aria-label="Filter by category" id="filter-bar"></div>
+      <div class="projects-grid" id="projects-grid" aria-label="Projects list"></div>
+    </section>
+  </div>
+</main>
+
+<footer id="footer" role="contentinfo">
+  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+</footer>
+
+<script>
+  let allProjects = [];
+  let activeFilter = 'All';
+
+  fetch('data/projects.json')
+    .then(r => r.json())
+    .then(data => {
+      allProjects = data;
+      buildFilterBar();
+      renderProjects('All');
+    })
+    .catch(() => {
+      document.getElementById('projects-grid').innerHTML =
+        '<p class="text-secondary">Could not load project data.</p>';
+    });
+
+  function buildFilterBar() {
+    const bar = document.getElementById('filter-bar');
+    const categories = ['All', ...new Set(allProjects.map(p => p.category))];
+
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (cat === 'All' ? ' active' : '');
+      btn.textContent = cat;
+      btn.setAttribute('aria-pressed', cat === 'All' ? 'true' : 'false');
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+        activeFilter = cat;
+        renderProjects(cat);
+      });
+      bar.appendChild(btn);
+    });
+  }
+
+  function renderProjects(category) {
+    const grid = document.getElementById('projects-grid');
+    grid.innerHTML = '';
+
+    const filtered = category === 'All'
+      ? allProjects
+      : allProjects.filter(p => p.category === category);
+
+    filtered.forEach((p, i) => {
+      const card = document.createElement('article');
+      card.className = 'project-card';
+      card.setAttribute('aria-label', p.title);
+
+      const index = String(i + 1).padStart(2, '0');
+
+      card.innerHTML = `
+        <div class="pc-meta">
+          <span>PRJ-${index}</span>
+          <span class="pc-category">${escapeHTML(p.category)}</span>
+        </div>
+        <h3>${escapeHTML(p.title)}</h3>
+        <p class="pc-short">${escapeHTML(p.short)}</p>
+        <div class="pc-tags">
+          ${p.tags.map(t => `<span class="tag">${escapeHTML(t)}</span>`).join('')}
+        </div>
+        <button class="pc-expand-btn" aria-expanded="false" aria-controls="desc-${p.id}">
+          + View details
+        </button>
+        <div class="pc-description" id="desc-${p.id}" role="region" aria-label="${escapeHTML(p.title)} details">
+          ${escapeHTML(p.description)}
+        </div>
+      `;
+
+      const btn = card.querySelector('.pc-expand-btn');
+      const desc = card.querySelector('.pc-description');
+
+      btn.addEventListener('click', () => {
+        const open = desc.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+        btn.textContent = open ? '− Hide details' : '+ View details';
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  function escapeHTML(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+</script>
+</body>
+</html>
