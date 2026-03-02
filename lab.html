@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/i18n.js"></script>
   <style>
     /* ---- Lab map layout ---- */
     .network-map-container {
@@ -111,19 +112,19 @@
   <div class="container">
     <section class="section">
       <header class="section-header">
-        <p class="section-tag">// Lab Environment</p>
-        <h1>Homelab Network Topology</h1>
-        <p>Personal infrastructure lab — designed to mirror enterprise environments for testing hardening, automation and observability procedures. Click any node for technical details.</p>
+        <p class="section-tag" data-i18n="lab.tag">// Lab Environment</p>
+        <h1 data-i18n="lab.title">Homelab Network Topology</h1>
+        <p data-i18n="lab.desc">Personal infrastructure lab — designed to mirror enterprise environments for testing hardening, automation and observability procedures. Click any node for technical details.</p>
       </header>
 
       <div id="network-map-mount" aria-label="Interactive network topology diagram"></div>
-      <div class="map-hint" aria-hidden="true">Click or press Enter on any node to view configuration details</div>
+      <div class="map-hint" aria-hidden="true" data-i18n="lab.hint">Click or press Enter on any node to view configuration details</div>
     </section>
   </div>
 </main>
 
 <footer id="footer" role="contentinfo">
-  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+  <span>ED-OPS</span> // <span data-i18n="footer.text">Elio Dages — Network &amp; Infrastructure Engineer</span>
 </footer>
 
 <script src="components/network-map.js"></script>
