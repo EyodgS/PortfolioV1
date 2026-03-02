@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ED-OPS homelab network topology — interactive visualization of the personal lab infrastructure." />
+  <title>ED-OPS // Lab Topology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    /* ---- Lab map layout ---- */
+    .network-map-container {
+      position: relative;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    /* ---- Detail panel ---- */
+    .network-detail-panel {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: min(320px, 90%);
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius);
+      z-index: 10;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    .ndp-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .ndp-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+    }
+
+    .ndp-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 1;
+      padding: 0 0.25rem;
+      transition: color var(--transition);
+    }
+
+    .ndp-close:hover { color: var(--accent-red); }
+
+    .ndp-body {
+      padding: 1rem;
+    }
+
+    .ndp-node-title {
+      font-size: 1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .ndp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .ndp-details {
+      list-style: none;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .ndp-details li::before {
+      content: '· ';
+      color: var(--accent-cyan);
+    }
+
+    /* ---- Hint bar ---- */
+    .map-hint {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      padding: 0.6rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-primary);
+    }
+
+    @media (max-width: 600px) {
+      .network-detail-panel { position: static; width: 100%; margin-top: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<script src="components/navbar.js"></script>
+
+<main class="page-content" aria-label="Lab topology page">
+  <div class="container">
+    <section class="section">
+      <header class="section-header">
+        <p class="section-tag">// Lab Environment</p>
+        <h1>Homelab Network Topology</h1>
+        <p>Personal infrastructure lab — designed to mirror enterprise environments for testing hardening, automation and observability procedures. Click any node for technical details.</p>
+      </header>
+
+      <div id="network-map-mount" aria-label="Interactive network topology diagram"></div>
+      <div class="map-hint" aria-hidden="true">Click or press Enter on any node to view configuration details</div>
+    </section>
+  </div>
+</main>
+
+<footer id="footer" role="contentinfo">
+  <span>ED-OPS</span> // Elio Dages — Network &amp; Infrastructure Engineer
+</footer>
+
+<script src="components/network-map.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const mount = document.getElementById('network-map-mount');
+    new EDOpsNetworkMap(mount);
+  });
+</script>
+</body>
+</html>
