@@ -173,6 +173,11 @@ class EDOpsTerminal {
       .replace(/"/g, '&quot;');
   }
 
+  /** Translate a key via EDOpsI18n, falling back to fb if not loaded yet. */
+  _t(key, fb) {
+    return (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
+  }
+
   /* ---------- Welcome banner ---------- */
 
   _printWelcome() {
@@ -212,7 +217,6 @@ class EDOpsTerminal {
   }
 
   _cmd_help() {
-    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
     const lines = [
       `&nbsp;`,
       `<span class="t-accent">Available commands:</span>`,
@@ -237,7 +241,6 @@ class EDOpsTerminal {
   }
 
   _cmd_about() {
-    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
     const lines = [
       `&nbsp;`,
       `<span class="t-accent">// ABOUT</span>`,
@@ -270,37 +273,35 @@ class EDOpsTerminal {
   }
 
   _cmd_career() {
-    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
     const root = this.rootPath;
     const lines = [
       `&nbsp;`,
-      `<span class="t-accent">${tr('terminal.cmd.career.header', '// CAREER & PROFESSIONAL JOURNEY')}</span>`,
+      `<span class="t-accent">${this._t('terminal.cmd.career.header', '// CAREER & PROFESSIONAL JOURNEY')}</span>`,
       `&nbsp;`,
-      `  Name   : <span class="t-green">${tr('terminal.cmd.career.name', 'Elio Dages')}</span>`,
-      `  Role   : ${tr('terminal.cmd.career.role', 'Network & Infrastructure Engineer')}`,
-      `  Edu    : ${tr('terminal.cmd.career.edu', 'BTS SIO SISR → Bachelor BAIS (work-study)')}`,
-      `  Exp    : ${tr('terminal.cmd.career.exp', 'CPAGE — IT Infrastructure (work-study)')}`,
-      `  Focus  : ${tr('terminal.cmd.career.focus', 'Deployment automation, AD administration, GPO hardening')}`,
+      `  Name   : <span class="t-green">${this._t('terminal.cmd.career.name', 'Elio Dages')}</span>`,
+      `  Role   : ${this._t('terminal.cmd.career.role', 'Network & Infrastructure Engineer')}`,
+      `  Edu    : ${this._t('terminal.cmd.career.edu', 'BTS SIO SISR → Bachelor BAIS (work-study)')}`,
+      `  Exp    : ${this._t('terminal.cmd.career.exp', 'CPAGE — IT Infrastructure (work-study)')}`,
+      `  Focus  : ${this._t('terminal.cmd.career.focus', 'Deployment automation, AD administration, GPO hardening')}`,
       `&nbsp;`,
-      `  <span class="t-dim">${tr('terminal.cmd.career.link', '→ Full profile at')} <a href="${root}career.html" class="t-accent">career</a></span>`,
+      `  <span class="t-dim">${this._t('terminal.cmd.career.link', '→ Full profile at')} <a href="${root}career.html" class="t-accent">career</a></span>`,
       `&nbsp;`,
     ];
     this._printLines(lines, 0, 25);
   }
 
   _cmd_experience() {
-    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
     const root = this.rootPath;
     const lines = [
       `&nbsp;`,
-      `<span class="t-accent">${tr('terminal.cmd.experience.header', '// PROFESSIONAL EXPERIENCE')}</span>`,
+      `<span class="t-accent">${this._t('terminal.cmd.experience.header', '// PROFESSIONAL EXPERIENCE')}</span>`,
       `&nbsp;`,
-      `  <span class="t-green">[${tr('terminal.cmd.experience.company', 'CPAGE')}]</span> — ${tr('terminal.cmd.experience.role', 'IT Infrastructure Engineer (work-study)')}`,
+      `  <span class="t-green">[${this._t('terminal.cmd.experience.company', 'CPAGE')}]</span> — ${this._t('terminal.cmd.experience.role', 'IT Infrastructure Engineer (work-study)')}`,
       `&nbsp;`,
-      `    ${tr('terminal.cmd.experience.task1', '→ Workstation deployment automation (MDT / task sequences)')}`,
-      `    ${tr('terminal.cmd.experience.task2', '→ Windows 11 engineering, Active Directory administration')}`,
-      `    ${tr('terminal.cmd.experience.task3', '→ GPO hardening, user lifecycle management')}`,
-      `    ${tr('terminal.cmd.experience.task4', '→ Enterprise troubleshooting & documentation')}`,
+      `    ${this._t('terminal.cmd.experience.task1', '→ Workstation deployment automation (MDT / task sequences)')}`,
+      `    ${this._t('terminal.cmd.experience.task2', '→ Windows 11 engineering, Active Directory administration')}`,
+      `    ${this._t('terminal.cmd.experience.task3', '→ GPO hardening, user lifecycle management')}`,
+      `    ${this._t('terminal.cmd.experience.task4', '→ Enterprise troubleshooting & documentation')}`,
       `&nbsp;`,
       `  <span class="t-dim">→ Full profile at <a href="${root}career.html" class="t-accent">career</a></span>`,
       `&nbsp;`,
@@ -309,12 +310,11 @@ class EDOpsTerminal {
   }
 
   _cmd_expertise() {
-    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
     const root = this.rootPath;
     fetch(root + 'data/skills.json')
       .then(r => r.json())
       .then(data => {
-        const lines = [`&nbsp;`, `<span class="t-accent">${tr('terminal.cmd.expertise.header', '// DOMAINS OF OPERATION')}</span>`, `&nbsp;`];
+        const lines = [`&nbsp;`, `<span class="t-accent">${this._t('terminal.cmd.expertise.header', '// DOMAINS OF OPERATION')}</span>`, `&nbsp;`];
         data.domains.forEach(d => {
           lines.push(`  <span class="t-green">[${d.name}]</span>`);
           d.items.forEach(item => lines.push(`    · ${item}`));
@@ -330,18 +330,17 @@ class EDOpsTerminal {
   }
 
   _cmd_veille() {
-    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
     const root = this.rootPath;
     const lines = [
       `&nbsp;`,
-      `<span class="t-accent">${tr('terminal.cmd.veille.header', '// TECHNOLOGY WATCH')}</span>`,
+      `<span class="t-accent">${this._t('terminal.cmd.veille.header', '// TECHNOLOGY WATCH')}</span>`,
       `&nbsp;`,
-      `  · ${tr('terminal.cmd.veille.topic1', 'Enterprise Infrastructure Evolution')}`,
-      `  · ${tr('terminal.cmd.veille.topic2', 'Cybersecurity & European Regulations (NIS2)')}`,
-      `  · ${tr('terminal.cmd.veille.topic3', 'Cloud & DevOps Transformation')}`,
-      `  · ${tr('terminal.cmd.veille.topic4', 'Personal Learning Methodology')}`,
+      `  · ${this._t('terminal.cmd.veille.topic1', 'Enterprise Infrastructure Evolution')}`,
+      `  · ${this._t('terminal.cmd.veille.topic2', 'Cybersecurity & European Regulations (NIS2)')}`,
+      `  · ${this._t('terminal.cmd.veille.topic3', 'Cloud & DevOps Transformation')}`,
+      `  · ${this._t('terminal.cmd.veille.topic4', 'Personal Learning Methodology')}`,
       `&nbsp;`,
-      `  <span class="t-dim">${tr('terminal.cmd.veille.link', '→ Full research at')} <a href="${root}veille.html" class="t-accent">veille</a></span>`,
+      `  <span class="t-dim">${this._t('terminal.cmd.veille.link', '→ Full research at')} <a href="${root}veille.html" class="t-accent">veille</a></span>`,
       `&nbsp;`,
     ];
     this._printLines(lines, 0, 25);

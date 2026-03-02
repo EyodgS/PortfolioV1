@@ -63,16 +63,19 @@
   Promise.all(
     SUPPORTED.map(function (lang) {
       return fetch(root + 'data/i18n/' + lang + '.json')
-        .then(function (r) { return r.json(); })
-        .then(function (data) { translations[lang] = data; });
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (data) { translations[lang] = data; })
+        .catch(function (err) {
+          console.warn('ED-OPS i18n: failed to load ' + lang + '.json', err);
+        });
     })
   ).then(function () {
     applyTranslations();
     _resolveReady();
     document.dispatchEvent(new CustomEvent('edops:i18n:ready'));
-  }).catch(function (err) {
-    console.warn('ED-OPS i18n: failed to load translation files', err);
-    _resolveReady();
   });
 
   window.EDOpsI18n = { t: t, setLang: setLang, getLang: getLang, applyTranslations: applyTranslations, ready: ready };
