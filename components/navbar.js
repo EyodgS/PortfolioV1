@@ -146,4 +146,24 @@
   } else {
     buildNavbar();
   }
+
+  /* ----------------------------------------------------------------
+   * Auto-inject shared effect scripts (fx.js + system-hud.js)
+   * so every page gets the full interactive experience without
+   * needing individual <script> tags in each HTML file.
+   * ---------------------------------------------------------------- */
+  (function injectEffects() {
+    var root    = getRootPath();
+    var scripts = ['assets/js/fx.js', 'assets/js/system-hud.js'];
+    scripts.forEach(function (src) {
+      var scriptId = 'edops-effect-' + src.replace(/\W/g, '-');
+      if (document.getElementById(scriptId)) return; /* already injected */
+      var s  = document.createElement('script');
+      s.id   = scriptId;
+      s.src  = root + src;
+      s.async = false; /* preserve order: fx first, then hud */
+      document.body.appendChild(s);
+    });
+  })();
+
 })();
