@@ -1,40 +1,40 @@
 {
   "domains": [
     {
-      "id": "network-architecture",
-      "name": "Network Architecture",
+      "id": "network-engineering",
+      "name": "Network Engineering",
       "icon": "🔗",
-      "items": ["pfSense / OPNsense", "VLAN design & 802.1Q trunking", "Routing (OSPF, static)", "DNS / DHCP", "IPv4 subnetting & IP planning", "TCP/IP stack internals"]
+      "items": ["VLAN segmentation & 802.1Q trunking", "Routing concepts (static, OSPF)", "Firewall architecture & rule design", "VPN IPsec IKEv2 design", "pfSense / OPNsense environments", "DNS / DHCP / IPv4 subnetting"]
     },
     {
-      "id": "infrastructure-automation",
-      "name": "Infrastructure Automation",
+      "id": "systems-administration",
+      "name": "Systems Administration",
+      "icon": "🖥️",
+      "items": ["Active Directory DS & DNS", "Windows Server roles & features", "Identity & access management", "MDT / WDS deployment strategies", "GPO design & CIS hardening", "LAPS & RBAC principles"]
+    },
+    {
+      "id": "automation-scripting",
+      "name": "Automation & Scripting",
       "icon": "⚙️",
-      "items": ["Ansible (playbooks, roles, Vault)", "PowerShell scripting", "MDT / WDS deployment", "Bash scripting", "Terraform (in progress)", "Chocolatey package management"]
+      "items": ["PowerShell automation & scripting", "Python for administration tasks", "Task sequence automation (MDT)", "Ansible playbooks & roles", "Bash scripting", "Chocolatey package management"]
     },
     {
-      "id": "identity-access",
-      "name": "Identity & Access Management",
-      "icon": "🔐",
-      "items": ["Active Directory DS & DNS", "GPO design & CIS hardening", "Tier Model (PAW / Tier 0-2)", "PKI / Internal CA", "LAPS", "RBAC principles"]
+      "id": "infrastructure-lab",
+      "name": "Infrastructure Lab Engineering",
+      "icon": "🧪",
+      "items": ["Homelab experimentation & design", "Proxmox virtual environments", "Network simulations (GNS3/PT)", "Enterprise-equivalent configurations", "Terraform (in progress)", "Continuous rebuild methodology"]
     },
     {
-      "id": "secure-remote-access",
-      "name": "Secure Remote Access",
-      "icon": "🛡️",
-      "items": ["IPsec IKEv2 site-to-site VPN", "OpenVPN / WireGuard", "SSL/TLS certificate management", "Reverse proxy (Nginx / Traefik)", "Firewall rule design", "Zero Trust concepts"]
-    },
-    {
-      "id": "monitoring-observability",
-      "name": "Monitoring & Observability",
+      "id": "monitoring-operations",
+      "name": "Monitoring & Operations",
       "icon": "📊",
-      "items": ["Prometheus + node_exporter", "Grafana dashboards", "Loki log aggregation", "Windows Event Forwarding", "SNMP polling", "Alertmanager notifications"]
+      "items": ["Prometheus + node_exporter", "Grafana dashboards & alerting", "Loki log aggregation", "Supervision & incident analysis", "SNMP polling", "Windows Event Forwarding"]
     },
     {
-      "id": "incident-response",
-      "name": "Incident Response",
-      "icon": "🚨",
-      "items": ["Log analysis & correlation", "Event ID investigation (Windows)", "Network traffic analysis (Wireshark)", "Syslog event triage", "Security baselining", "Change management process"]
+      "id": "secure-access",
+      "name": "Secure Access & PKI",
+      "icon": "🛡️",
+      "items": ["IPsec IKEv2 site-to-site VPN", "OpenVPN / WireGuard", "SSL/TLS certificate management", "Internal CA (two-tier PKI)", "Reverse proxy (Nginx / Traefik)", "Zero Trust concepts"]
     }
   ],
   "tools": {

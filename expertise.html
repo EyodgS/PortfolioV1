@@ -135,12 +135,13 @@
 </footer>
 
 <script>
-    'network-architecture':       'var(--accent-green)',
-    'infrastructure-automation':  'var(--accent-cyan)',
-    'identity-access':            'var(--accent-orange)',
-    'secure-remote-access':       'var(--accent-cyan)',
-    'monitoring-observability':   'var(--accent-green)',
-    'incident-response':          'var(--accent-red)',
+  const DOMAIN_COLORS = {
+    'network-engineering':        'var(--accent-green)',
+    'systems-administration':     'var(--accent-cyan)',
+    'automation-scripting':       'var(--accent-orange)',
+    'infrastructure-lab':         'var(--accent-cyan)',
+    'monitoring-operations':      'var(--accent-green)',
+    'secure-access':              'var(--accent-red)',
   };
 
   fetch('data/skills.json')
