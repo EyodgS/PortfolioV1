@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ED-OPS technology watch — enterprise infrastructure evolution, cybersecurity regulations, cloud &amp; DevOps transformation." />
+  <title>ED-OPS // Technology Watch &amp; Research</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/i18n.js"></script>
+  <style>
+    /* ---- Veille section cards ---- */
+    .veille-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.5rem;
+      transition: border-color var(--transition);
+    }
+
+    .veille-section:hover { border-color: var(--border-bright); }
+
+    .veille-section-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent-green);
+      margin-bottom: 0.5rem;
+      font-family: var(--font-mono);
+    }
+
+    .veille-section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .veille-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .veille-items li {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .veille-items li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent-cyan);
+    }
+
+    /* ---- Methodology block ---- */
+    .methodology-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      border-left: 3px solid var(--accent-green);
+    }
+
+    .methodology-block .mb-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .methodology-steps {
+      counter-reset: step;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .methodology-steps li {
+      counter-increment: step;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .methodology-steps li::before {
+      content: counter(step, decimal-leading-zero);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-green);
+      background: rgba(0,255,136,0.08);
+      border: 1px solid var(--accent-green);
+      border-radius: var(--radius);
+      padding: 0.1rem 0.4rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* ---- Grid for first three sections ---- */
+    .veille-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .veille-grid .veille-section { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+<script src="components/navbar.js"></script>
+
+<main class="page-content" aria-label="Technology watch page">
+  <div class="container">
+
+    <!-- Header -->
+    <section class="section" aria-labelledby="veille-heading">
+      <header class="section-header">
+        <p class="section-tag" data-i18n="veille.tag">// Technology Watch</p>
+        <h1 id="veille-heading" data-i18n="veille.title">Technology Watch &amp; Research</h1>
+        <p data-i18n="veille.desc">Continuous professional monitoring of IT evolution — tracking enterprise infrastructure trends, security regulations, and cloud transformation.</p>
+      </header>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Three topic sections in a grid -->
+    <div class="veille-grid" aria-label="Technology watch topics">
+
+      <!-- Section 1: Enterprise Infrastructure -->
+      <article class="veille-section" aria-labelledby="s1-heading">
+        <div class="veille-section-tag" data-i18n="veille.s1_tag">// Enterprise Infrastructure</div>
+        <h2 id="s1-heading" class="veille-section-title" data-i18n="veille.s1_title">Enterprise Infrastructure Evolution</h2>
+        <ul class="veille-items">
+          <li data-i18n="veille.s1_item1">Hybrid infrastructure architectures — on-premise meets cloud in enterprise environments</li>
+          <li data-i18n="veille.s1_item2">Automation trends — infrastructure provisioning moving toward code-defined approaches</li>
+          <li data-i18n="veille.s1_item3">Infrastructure as Code adoption — Terraform, Ansible, and configuration management at scale</li>
+        </ul>
+      </article>
+
+      <!-- Section 2: Cybersecurity -->
+      <article class="veille-section" aria-labelledby="s2-heading">
+        <div class="veille-section-tag" data-i18n="veille.s2_tag">// Cybersecurity &amp; Regulations</div>
+        <h2 id="s2-heading" class="veille-section-title" data-i18n="veille.s2_title">Cybersecurity &amp; European Regulations</h2>
+        <ul class="veille-items">
+          <li data-i18n="veille.s2_item1">NIS2 directive impacts on enterprise infrastructure security obligations</li>
+          <li data-i18n="veille.s2_item2">Infrastructure security hardening requirements and audit frameworks</li>
+          <li data-i18n="veille.s2_item3">Risk management evolution — continuous assessment replacing periodic reviews</li>
+        </ul>
+      </article>
+
+      <!-- Section 3: Cloud & DevOps -->
+      <article class="veille-section" aria-labelledby="s3-heading">
+        <div class="veille-section-tag" data-i18n="veille.s3_tag">// Cloud &amp; DevOps</div>
+        <h2 id="s3-heading" class="veille-section-title" data-i18n="veille.s3_title">Cloud &amp; DevOps Transformation</h2>
+        <ul class="veille-items">
+          <li data-i18n="veille.s3_item1">Cloud networking concepts — VPC design, hybrid connectivity, cloud-native firewalling</li>
+          <li data-i18n="veille.s3_item2">Automation pipelines — CI/CD integration with infrastructure provisioning</li>
+          <li data-i18n="veille.s3_item3">Observability at scale — distributed tracing, centralized logging, metrics aggregation</li>
+        </ul>
+      </article>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Section 4: Learning Methodology -->
+    <section class="section" aria-labelledby="s4-heading">
+      <header class="section-header">
+        <p class="section-tag" data-i18n="veille.s4_tag">// Learning Methodology</p>
+        <h2 id="s4-heading" data-i18n="veille.s4_title">Personal Learning Methodology</h2>
+      </header>
+
+      <div class="methodology-block">
+        <p class="mb-desc" data-i18n="veille.s4_desc">Structured approach to staying current with technology evolution:</p>
+        <ol class="methodology-steps" aria-label="Learning steps">
+          <li data-i18n="veille.s4_item1">Reading official documentation, RFCs, and vendor technical guides</li>
+          <li data-i18n="veille.s4_item2">Hands-on experimentation in homelab before adopting new technologies</li>
+          <li data-i18n="veille.s4_item3">Testing technologies in isolated lab environments to understand failure modes</li>
+          <li data-i18n="veille.s4_item4">Technical curiosity mindset — questioning assumptions and exploring edge cases</li>
+        </ol>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer id="footer" role="contentinfo">
+  <span>ED-OPS</span> // <span data-i18n="footer.text">Elio Dages — Network &amp; Infrastructure Engineer</span>
+</footer>
+
+</body>
+</html>

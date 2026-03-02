@@ -14,6 +14,8 @@
     { label: 'Expertise', href: 'expertise.html',  i18n: 'nav.expertise' },
     { label: 'Projects',  href: 'projects.html',   i18n: 'nav.projects' },
     { label: 'Ops',       href: 'ops.html',        i18n: 'nav.ops' },
+    { label: 'Career',    href: 'career.html',     i18n: 'nav.career' },
+    { label: 'Tech Watch',href: 'veille.html',     i18n: 'nav.veille' },
   ];
 
   /**
@@ -115,11 +117,26 @@
       }
     });
 
-    // Re-apply translations when language changes
+    // Re-apply translations when language changes or i18n is ready
     document.addEventListener('edops:langchange', function (e) {
       langBtn.textContent = e.detail.lang === 'fr' ? 'EN' : 'FR';
       toggle.setAttribute('aria-label',
         window.EDOpsI18n ? window.EDOpsI18n.t('nav.toggle_aria') : 'Toggle navigation');
+      // Re-render link labels
+      ul.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        var val = window.EDOpsI18n ? window.EDOpsI18n.t(key) : key;
+        if (val !== key) el.textContent = val;
+      });
+    });
+
+    document.addEventListener('edops:i18n:ready', function () {
+      // Apply translations to navbar links after JSON files are loaded
+      ul.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        var val = window.EDOpsI18n ? window.EDOpsI18n.t(key) : key;
+        if (val !== key) el.textContent = val;
+      });
     });
   }
 

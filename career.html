@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ED-OPS — Elio Dages career profile. Network & Infrastructure Engineer. Professional experience at CPAGE, BTS SIO SISR, Bachelor BAIS." />
+  <title>ED-OPS // Career &amp; Professional Journey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <script src="assets/js/i18n.js"></script>
+  <style>
+    /* ---- Timeline ---- */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-green), var(--border));
+    }
+
+    .timeline-item {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: border-color var(--transition);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.35rem;
+      top: 1.75rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: var(--glow-green);
+      border: 2px solid var(--bg-primary);
+    }
+
+    .timeline-item:hover { border-color: var(--accent-green); }
+
+    .timeline-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .timeline-company {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-cyan);
+    }
+
+    .timeline-period {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+    }
+
+    .timeline-role {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      border-left: 2px solid var(--border-bright);
+      padding-left: 1rem;
+    }
+
+    .task-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .task-list li {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .task-list li::before {
+      content: '→ ';
+      color: var(--accent-green);
+    }
+
+    /* ---- Philosophy grid ---- */
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .phil-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .phil-card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
+
+    .phil-card .pc-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .phil-card .pc-desc {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ---- Summary block ---- */
+    .summary-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+    }
+
+    .summary-block p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 0.75rem;
+    }
+
+    .summary-block p:last-child { margin-bottom: 0; }
+  </style>
+</head>
+<body>
+<script src="components/navbar.js"></script>
+
+<main class="page-content" aria-label="Career page">
+  <div class="container">
+
+    <!-- Header -->
+    <section class="section" aria-labelledby="career-heading">
+      <header class="section-header">
+        <p class="section-tag" data-i18n="career.tag">// Professional Profile</p>
+        <h1 id="career-heading" data-i18n="career.title">Career &amp; Professional Journey</h1>
+        <p class="text-secondary" data-i18n="career.subtitle">Elio Dages — Network &amp; Infrastructure Engineer</p>
+      </header>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Profile Summary -->
+    <section class="section" aria-labelledby="summary-heading">
+      <header class="section-header">
+        <p class="section-tag" data-i18n="career.summary_tag">// Profile Summary</p>
+        <h2 id="summary-heading" data-i18n="career.summary_title">Professional Background</h2>
+      </header>
+      <div class="summary-block">
+        <p data-i18n="career.summary_p1">Bachelor-level IT professional specialized in Systems &amp; Network Administration. Academic background: BTS SIO SISR followed by Bachelor BAIS completed through a work-study program.</p>
+        <p data-i18n="career.summary_p2">Strong focus on enterprise infrastructure, deployment automation and network architecture. Professional experience gained at CPAGE within real IT infrastructure environments.</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Professional Experience -->
+    <section class="section" aria-labelledby="exp-heading">
+      <header class="section-header">
+        <p class="section-tag" data-i18n="career.exp_tag">// Professional Experience</p>
+        <h2 id="exp-heading" data-i18n="career.exp_title">Work Experience</h2>
+      </header>
+
+      <div class="timeline" aria-label="Career timeline">
+        <article class="timeline-item" aria-label="CPAGE experience">
+          <div class="timeline-meta">
+            <span class="timeline-company" data-i18n="career.cpage_location">CPAGE — IT Infrastructure Environment</span>
+            <span class="timeline-period" data-i18n="career.cpage_period">2023 — Present</span>
+          </div>
+          <div class="timeline-role" data-i18n="career.cpage_role">IT Infrastructure Engineer — Work-Study</div>
+          <p class="timeline-desc" data-i18n="career.cpage_desc">Hands-on infrastructure engineering within enterprise IT environments, focusing on deployment automation, identity management, and operational procedures.</p>
+          <ul class="task-list" aria-label="Responsibilities">
+            <li data-i18n="career.cpage_task1">Workstation deployment automation using MDT and custom task sequences</li>
+            <li data-i18n="career.cpage_task2">Windows 11 task sequence engineering and systematic customization</li>
+            <li data-i18n="career.cpage_task3">Enterprise Active Directory administration and domain management</li>
+            <li data-i18n="career.cpage_task4">User lifecycle management — account provisioning, modification, and decommissioning</li>
+            <li data-i18n="career.cpage_task5">GPO configuration, security hardening, and compliance policy enforcement</li>
+            <li data-i18n="career.cpage_task6">Troubleshooting enterprise environments — workstations, servers, and network components</li>
+            <li data-i18n="career.cpage_task7">Support for training infrastructure environments and lab systems</li>
+            <li data-i18n="career.cpage_task8">Collaboration with IT teams on infrastructure projects and technical decisions</li>
+            <li data-i18n="career.cpage_task9">Documentation maintenance and operational procedure creation</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- Technical Philosophy -->
+    <section class="section" aria-labelledby="philosophy-heading">
+      <header class="section-header">
+        <p class="section-tag" data-i18n="career.philosophy_tag">// Technical Philosophy</p>
+        <h2 id="philosophy-heading" data-i18n="career.philosophy_title">Engineering Mindset</h2>
+      </header>
+
+      <div class="philosophy-grid">
+        <div class="phil-card">
+          <div class="pc-title" data-i18n="career.phil_infra">Infrastructure-First Thinking</div>
+          <p class="pc-desc" data-i18n="career.phil_infra_desc">Every system decision starts with infrastructure — reliability, segmentation, and observability before application logic.</p>
+        </div>
+        <div class="phil-card">
+          <div class="pc-title" data-i18n="career.phil_auto">Automation Over Manual Operations</div>
+          <p class="pc-desc" data-i18n="career.phil_auto_desc">Repetitive tasks should be automated. Every manual operation is a future incident waiting to happen.</p>
+        </div>
+        <div class="phil-card">
+          <div class="pc-title" data-i18n="career.phil_lab">Continuous Lab Experimentation</div>
+          <p class="pc-desc" data-i18n="career.phil_lab_desc">Personal homelab environment for testing technologies, breaking configurations, and rebuilding with lessons learned.</p>
+        </div>
+        <div class="phil-card">
+          <div class="pc-title" data-i18n="career.phil_obs">Reliability and Observability Focus</div>
+          <p class="pc-desc" data-i18n="career.phil_obs_desc">Systems must be observable. Metrics, logs, and alerts are not optional — they are part of the infrastructure.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer id="footer" role="contentinfo">
+  <span>ED-OPS</span> // <span data-i18n="footer.text">Elio Dages — Network &amp; Infrastructure Engineer</span>
+</footer>
+
+</body>
+</html>

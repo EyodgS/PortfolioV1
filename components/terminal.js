@@ -195,28 +195,37 @@ class EDOpsTerminal {
 
   get COMMANDS() {
     return {
-      help: this._cmd_help,
-      about: this._cmd_about,
-      skills: this._cmd_skills,
-      projects: this._cmd_projects,
-      lab: this._cmd_lab,
-      contact: this._cmd_contact,
-      whoami: this._cmd_whoami,
-      uptime: this._cmd_uptime,
-      clear: this._cmd_clear,
+      help:       this._cmd_help,
+      about:      this._cmd_about,
+      skills:     this._cmd_skills,
+      expertise:  this._cmd_expertise,
+      projects:   this._cmd_projects,
+      lab:        this._cmd_lab,
+      contact:    this._cmd_contact,
+      whoami:     this._cmd_whoami,
+      career:     this._cmd_career,
+      experience: this._cmd_experience,
+      veille:     this._cmd_veille,
+      uptime:     this._cmd_uptime,
+      clear:      this._cmd_clear,
     };
   }
 
   _cmd_help() {
+    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
     const lines = [
       `&nbsp;`,
       `<span class="t-accent">Available commands:</span>`,
       `  <span class="t-cmd">help</span>       — show this help`,
       `  <span class="t-cmd">about</span>      — about Elio Dages`,
       `  <span class="t-cmd">whoami</span>     — current operator info`,
+      `  <span class="t-cmd">career</span>     — career & professional journey`,
+      `  <span class="t-cmd">experience</span> — professional experience`,
+      `  <span class="t-cmd">expertise</span>  — technical domains of operation`,
       `  <span class="t-cmd">skills</span>     — list technical domains`,
       `  <span class="t-cmd">projects</span>   — list active projects`,
       `  <span class="t-cmd">lab</span>        — homelab topology info`,
+      `  <span class="t-cmd">veille</span>     — technology watch`,
       `  <span class="t-cmd">contact</span>    — contact information`,
       `  <span class="t-cmd">uptime</span>     — session uptime`,
       `  <span class="t-cmd">clear</span>      — clear terminal`,
@@ -228,6 +237,7 @@ class EDOpsTerminal {
   }
 
   _cmd_about() {
+    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
     const lines = [
       `&nbsp;`,
       `<span class="t-accent">// ABOUT</span>`,
@@ -257,6 +267,84 @@ class EDOpsTerminal {
       `&nbsp;`,
     ];
     this._printLines(lines, 0, 30);
+  }
+
+  _cmd_career() {
+    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
+    const root = this.rootPath;
+    const lines = [
+      `&nbsp;`,
+      `<span class="t-accent">${tr('terminal.cmd.career.header', '// CAREER & PROFESSIONAL JOURNEY')}</span>`,
+      `&nbsp;`,
+      `  Name   : <span class="t-green">${tr('terminal.cmd.career.name', 'Elio Dages')}</span>`,
+      `  Role   : ${tr('terminal.cmd.career.role', 'Network & Infrastructure Engineer')}`,
+      `  Edu    : ${tr('terminal.cmd.career.edu', 'BTS SIO SISR → Bachelor BAIS (work-study)')}`,
+      `  Exp    : ${tr('terminal.cmd.career.exp', 'CPAGE — IT Infrastructure (work-study)')}`,
+      `  Focus  : ${tr('terminal.cmd.career.focus', 'Deployment automation, AD administration, GPO hardening')}`,
+      `&nbsp;`,
+      `  <span class="t-dim">${tr('terminal.cmd.career.link', '→ Full profile at')} <a href="${root}career.html" class="t-accent">career</a></span>`,
+      `&nbsp;`,
+    ];
+    this._printLines(lines, 0, 25);
+  }
+
+  _cmd_experience() {
+    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
+    const root = this.rootPath;
+    const lines = [
+      `&nbsp;`,
+      `<span class="t-accent">${tr('terminal.cmd.experience.header', '// PROFESSIONAL EXPERIENCE')}</span>`,
+      `&nbsp;`,
+      `  <span class="t-green">[${tr('terminal.cmd.experience.company', 'CPAGE')}]</span> — ${tr('terminal.cmd.experience.role', 'IT Infrastructure Engineer (work-study)')}`,
+      `&nbsp;`,
+      `    ${tr('terminal.cmd.experience.task1', '→ Workstation deployment automation (MDT / task sequences)')}`,
+      `    ${tr('terminal.cmd.experience.task2', '→ Windows 11 engineering, Active Directory administration')}`,
+      `    ${tr('terminal.cmd.experience.task3', '→ GPO hardening, user lifecycle management')}`,
+      `    ${tr('terminal.cmd.experience.task4', '→ Enterprise troubleshooting & documentation')}`,
+      `&nbsp;`,
+      `  <span class="t-dim">→ Full profile at <a href="${root}career.html" class="t-accent">career</a></span>`,
+      `&nbsp;`,
+    ];
+    this._printLines(lines, 0, 25);
+  }
+
+  _cmd_expertise() {
+    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
+    const root = this.rootPath;
+    fetch(root + 'data/skills.json')
+      .then(r => r.json())
+      .then(data => {
+        const lines = [`&nbsp;`, `<span class="t-accent">${tr('terminal.cmd.expertise.header', '// DOMAINS OF OPERATION')}</span>`, `&nbsp;`];
+        data.domains.forEach(d => {
+          lines.push(`  <span class="t-green">[${d.name}]</span>`);
+          d.items.forEach(item => lines.push(`    · ${item}`));
+          lines.push(`&nbsp;`);
+        });
+        lines.push(`  <span class="t-dim">→ Details at <a href="${root}expertise.html" class="t-accent">expertise</a></span>`);
+        lines.push(`&nbsp;`);
+        this._printLines(lines, 0, 20);
+      })
+      .catch(() => {
+        this._printLine(`<span class="t-error">Error: could not load skills data</span>`);
+      });
+  }
+
+  _cmd_veille() {
+    const tr = (key, fb) => (window.EDOpsI18n ? window.EDOpsI18n.t(key) : null) || fb;
+    const root = this.rootPath;
+    const lines = [
+      `&nbsp;`,
+      `<span class="t-accent">${tr('terminal.cmd.veille.header', '// TECHNOLOGY WATCH')}</span>`,
+      `&nbsp;`,
+      `  · ${tr('terminal.cmd.veille.topic1', 'Enterprise Infrastructure Evolution')}`,
+      `  · ${tr('terminal.cmd.veille.topic2', 'Cybersecurity & European Regulations (NIS2)')}`,
+      `  · ${tr('terminal.cmd.veille.topic3', 'Cloud & DevOps Transformation')}`,
+      `  · ${tr('terminal.cmd.veille.topic4', 'Personal Learning Methodology')}`,
+      `&nbsp;`,
+      `  <span class="t-dim">${tr('terminal.cmd.veille.link', '→ Full research at')} <a href="${root}veille.html" class="t-accent">veille</a></span>`,
+      `&nbsp;`,
+    ];
+    this._printLines(lines, 0, 25);
   }
 
   _cmd_skills() {
